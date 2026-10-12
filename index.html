@@ -3,676 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Шувуу Онох - Кирилл Гарын Тоглоом</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
-  
+  <title>6-р анги - ICT Grade 6</title>
   <style>
     body {
-      font-family: 'Nunito', sans-serif;
-      user-select: none;
-      -webkit-user-select: none;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
-    .font-fredoka {
-      font-family: 'Fredoka', cursive;
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    h1 { margin: 0; font-size: 2.2rem; }
+    p.subtitle { margin-top: 10px; opacity: 0.9; font-size: 1.1rem; }
     
-    /* Animated Clouds Background */
-    .sky-bg {
-      background: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 45%, #bae6fd 80%, #e0f2fe 100%);
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-
-    @keyframes cloudMove {
-      0% { transform: translateX(-200px); }
-      100% { transform: translateX(100vw); }
+    .section-title {
+      font-size: 1.5rem;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-bottom: 25px;
+      color: #2c3e50;
     }
-
-    .cloud {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 999px;
-      backdrop-filter: blur(4px);
-      pointer-events: none;
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
     }
-    .cloud::before, .cloud::after {
-      content: '';
-      position: absolute;
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 50%;
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-
-    /* Bird elements & hit effects */
-    .bird-container {
-      position: absolute;
-      transition: transform 0.05s linear;
-      will-change: transform, left, top;
-      cursor: default;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
-
-    @keyframes floatScore {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      50% { opacity: 1; transform: translateY(-30px) scale(1.3); }
-      100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+    .card h3 {
+      margin-top: 0;
+      color: #2c3e50;
     }
-
-    .hit-score-popup {
-      position: absolute;
-      animation: floatScore 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-      pointer-events: none;
-      font-family: 'Fredoka', cursive;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    .card p {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
-
-    /* Keypress Feedback on Virtual Keyboard */
-    .key-active {
-      transform: translateY(4px) scale(0.95) !important;
-      box-shadow: 0 0 15px rgba(251, 191, 36, 0.8) !important;
-      background-color: #f59e0b !important;
-      color: white !important;
-      border-color: #d97706 !important;
+    .btn {
+      display: inline-block;
+      background-color: #e74c3c;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 15px;
+      transition: background 0.2s;
     }
-
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #94a3b8;
-      border-radius: 4px;
+    .btn:hover {
+      background-color: #c0392b;
     }
   </style>
 </head>
-<body class="sky-bg h-screen w-screen overflow-hidden flex flex-col justify-between text-slate-800">
+<body>
 
-  <div class="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-80">
-    <div class="cloud w-48 h-16 top-10" style="animation: cloudMove 35s linear infinite; left: -10%;">
-      <div class="absolute -top-8 left-8 w-20 h-20 bg-white/65 rounded-full"></div>
-      <div class="absolute -top-4 left-20 w-16 h-16 bg-white/65 rounded-full"></div>
-    </div>
-    <div class="cloud w-64 h-20 top-36" style="animation: cloudMove 48s linear infinite; animation-delay: -15s; left: -20%;">
-      <div class="absolute -top-10 left-10 w-24 h-24 bg-white/65 rounded-full"></div>
-      <div class="absolute -top-6 left-28 w-20 h-20 bg-white/65 rounded-full"></div>
-    </div>
-    <div class="cloud w-56 h-16 top-72" style="animation: cloudMove 40s linear infinite; animation-delay: -28s; left: -15%;">
-      <div class="absolute -top-8 left-12 w-20 h-20 bg-white/65 rounded-full"></div>
-    </div>
-  </div>
-
-  <header class="relative z-20 p-3 sm:p-4 bg-white/80 backdrop-blur-md border-b-4 border-sky-300 shadow-lg">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      
-      <!-- Title -->
-      <div class="flex items-center gap-2">
-        <span class="text-3xl sm:text-4xl animate-bounce">🦅</span>
-        <div>
-          <h1 class="text-xl sm:text-2xl font-black font-fredoka text-sky-800 tracking-wide leading-none">
-            Шувуу Онох
-          </h1>
-          <p class="text-xs sm:text-sm font-bold text-sky-600">Монгол Кирилл Гарын Дадлага (Суурь мөр)</p>
-        </div>
-      </div>
-
-      <!-- Live Game Stats Dashboard -->
-      <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
-        <!-- Score Box -->
-        <div class="bg-amber-100 border-2 border-amber-400 px-3 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm">
-          <span class="text-xl">🎯</span>
-          <div>
-            <div class="text-[10px] uppercase font-black text-amber-700 tracking-wider">Оноо</div>
-            <div id="scoreDisplay" class="text-lg sm:text-xl font-black font-fredoka text-amber-900 leading-none">0</div>
-          </div>
-        </div>
-
-        <!-- Timer Box -->
-        <div class="bg-rose-100 border-2 border-rose-400 px-3 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm">
-          <span class="text-xl">⏱️</span>
-          <div>
-            <div class="text-[10px] uppercase font-black text-rose-700 tracking-wider">Үлдсэн цаг</div>
-            <div id="timerDisplay" class="text-lg sm:text-xl font-black font-fredoka text-rose-900 leading-none">60с</div>
-          </div>
-        </div>
-
-        <!-- Accuracy Box -->
-        <div class="bg-emerald-100 border-2 border-emerald-400 px-3 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm hidden md:flex">
-          <span class="text-xl">✨</span>
-          <div>
-            <div class="text-[10px] uppercase font-black text-emerald-700 tracking-wider">Нарийвчлал</div>
-            <div id="accuracyDisplay" class="text-lg sm:text-xl font-black font-fredoka text-emerald-900 leading-none">100%</div>
-          </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="flex items-center gap-2">
-          <!-- Time selector -->
-          <select id="timeSelect" class="bg-white border-2 border-sky-400 text-sky-900 font-bold text-sm rounded-xl px-2.5 py-2 outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer shadow-sm">
-            <option value="30">30 сек</option>
-            <option value="60" selected>60 сек (1 мин)</option>
-            <option value="90">90 сек</option>
-            <option value="120">120 сек (2 мин)</option>
-          </select>
-
-          <!-- Audio Toggle -->
-          <button id="soundBtn" class="p-2 bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 rounded-xl text-lg shadow-sm transition active:scale-95" title="Дуу унтраах/ангаах">
-            🔊
-          </button>
-
-          <!-- Start / Stop Button -->
-          <button id="startBtn" class="bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-fredoka text-base sm:text-lg font-bold px-5 py-2 rounded-xl border-b-4 border-emerald-700 shadow-md transition active:translate-y-0.5 active:border-b-0">
-            Эхлүүлэх 🚀
-          </button>
-        </div>
-
-      </div>
-    </div>
+  <header>
+    <h1>💻 6-р ангийн Мэдээлэл Зүйн Сайтууд</h1>
+    <p class="subtitle">Интерактив хичээлүүд ба Дасгал тоглоомууд</p>
   </header>
 
-  <main id="gameArea" class="relative flex-1 w-full overflow-hidden z-10">
-    <!-- Welcome overlay / Initial Call to Action -->
-    <div id="startOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-sky-900/20 backdrop-blur-xs z-30 p-4 text-center">
-      <div class="bg-white/95 max-w-lg p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-sky-300 transform transition">
-        <div class="text-6xl mb-3">🦅 🎯</div>
-        <h2 class="text-2xl sm:text-3xl font-black font-fredoka text-slate-800 mb-2">Бэлэн үү?</h2>
-        <p class="text-slate-600 font-semibold mb-4 text-sm sm:text-base leading-relaxed">
-          Монгол кирилл гарын суурь мөрний <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">Й, Ы, Б, Ө, А, Х, Р, О, Л, Д</span> үсгүүдийг даран нисэж буй шувуудыг оноорой!
-        </p>
-        <div class="grid grid-cols-2 gap-2 text-xs text-slate-500 mb-6 bg-sky-50 p-3 rounded-xl border border-sky-100">
-          <div>👍 Зөв үсэг дарахад: <span class="font-bold text-emerald-600">+10 оноо</span></div>
-          <div>⚠️ Буруу дарахад: <span class="font-bold text-rose-500">-2 оноо</span></div>
+  <div class="container">
+    <h2 class="section-title">Хичээлийн тоглоом, дасгалууд</h2>
+    
+    <div class="cards-grid">
+      <!-- 1-р хичээлийн тоглоом -->
+      <div class="card">
+        <div>
+          <h3>🦅 1-р хичээл: Шувуу Онох Тоглоом</h3>
+          <p>Монгол кирилл гарын суурь мөрний (Й, Ы, Б, Ө, А, Х, Р, О, Л, Д) үсгүүдийг заах дасгал тоглоом.</p>
         </div>
-        <button id="overlayStartBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-xl font-bold py-3 px-8 rounded-2xl border-b-4 border-emerald-700 shadow-lg transition transform hover:-translate-y-0.5 active:translate-y-1 active:border-b-0">
-          Тоглож эхлэх! ✨
-        </button>
-      </div>
-    </div>
-
-    <!-- Floating target container generated dynamically in JS -->
-  </main>
-
-  <footer class="relative z-20 bg-slate-900/90 text-white backdrop-blur-md p-3 sm:p-4 border-t-4 border-sky-500 shadow-2xl">
-    <div class="max-w-4xl mx-auto flex flex-col items-center">
-      <div class="flex items-center justify-between w-full mb-2 px-2 text-xs sm:text-sm font-bold text-sky-300">
-        <span class="flex items-center gap-1">🖐️ Зүүн гар: <span class="text-amber-400">Й (Чигчий), Ы (Ядам), Б (Дунд), Ө (Долоовор)</span></span>
-        <span class="hidden sm:inline bg-sky-800/80 px-2 py-0.5 rounded text-sky-200">Гарын суурь мөр (Home Row)</span>
-        <span class="flex items-center gap-1">🖐️ Баруун гар: <span class="text-amber-400">Р (Долоовор), О (Дунд), Л (Ядам), Д (Чигчий)</span></span>
+        <a href="typing-game.html" class="btn">Тоглож эхлэх 🎮</a>
       </div>
 
-      <!-- On-Screen Keyboard Keys -->
-      <div class="w-full bg-slate-800 p-2 sm:p-3 rounded-2xl border-2 border-slate-700 shadow-inner overflow-x-auto">
-        <div id="virtualKeyboard" class="flex justify-center items-center gap-1.5 sm:gap-2 min-w-[620px]">
-          
-          <!-- Left Pinky: Й -->
-          <div data-key="Й" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-purple-600 border-b-4 border-purple-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-purple-200">A</span>
-            <span>Й</span>
-          </div>
-
-          <!-- Left Ring: Ы -->
-          <div data-key="Ы" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-blue-600 border-b-4 border-blue-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-blue-200">S</span>
-            <span>Ы</span>
-          </div>
-
-          <!-- Left Middle: Б -->
-          <div data-key="Б" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-teal-600 border-b-4 border-teal-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-teal-200">D</span>
-            <span>Б</span>
-          </div>
-
-          <!-- Left Index: Ө (Home bump) -->
-          <div data-key="Ө" class="vk-key relative flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-amber-600 border-b-4 border-amber-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-amber-200">F</span>
-            <span>Ө</span>
-            <div class="absolute bottom-1.5 w-3 h-1 bg-amber-200 rounded-full"></div>
-          </div>
-
-          <!-- Left Index reach: А -->
-          <div data-key="А" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-amber-700 border-b-4 border-amber-900 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5 mr-2">
-            <span class="text-xs font-normal text-amber-300">G</span>
-            <span>А</span>
-          </div>
-
-          <!-- Right Index reach: Х -->
-          <div data-key="Х" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-amber-700 border-b-4 border-amber-900 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5 ml-2">
-            <span class="text-xs font-normal text-amber-300">H</span>
-            <span>Х</span>
-          </div>
-
-          <!-- Right Index: Р (Home bump) -->
-          <div data-key="Р" class="vk-key relative flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-amber-600 border-b-4 border-amber-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-amber-200">J</span>
-            <span>Р</span>
-            <div class="absolute bottom-1.5 w-3 h-1 bg-amber-200 rounded-full"></div>
-          </div>
-
-          <!-- Right Middle: О -->
-          <div data-key="О" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-teal-600 border-b-4 border-teal-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-teal-200">K</span>
-            <span>О</span>
-          </div>
-
-          <!-- Right Ring: Л -->
-          <div data-key="Л" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-blue-600 border-b-4 border-blue-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-blue-200">L</span>
-            <span>Л</span>
-          </div>
-
-          <!-- Right Pinky: Д -->
-          <div data-key="Д" class="vk-key flex flex-col items-center justify-center w-12 h-14 sm:w-14 sm:h-16 bg-purple-600 border-b-4 border-purple-800 text-white font-black text-xl rounded-xl shadow transition transform hover:-translate-y-0.5">
-            <span class="text-xs font-normal text-purple-200">;</span>
-            <span>Д</span>
-          </div>
-
+      <!-- Дараагийн хичээлүүд нэмэх боломжтой карт -->
+      <div class="card">
+        <div>
+          <h3>📝 2-р хичээл: Удахгүй орно</h3>
+          <p>Дараагийн хичээлийн практик даалгавар ба интерактив дасгалууд энд байрлана.</p>
         </div>
+        <a href="#" class="btn" style="background-color: #bdc3c7; pointer-events: none;">Бэлтгэж байна</a>
       </div>
-    </div>
-  </footer>
-
-  <div id="gameOverModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-white max-w-md w-full p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-sky-400 text-center transform transition-all scale-95 opacity-0 duration-200" id="modalContent">
-      <div class="text-6xl mb-2" id="modalEmoji">🏆</div>
-      <h2 class="text-3xl font-black font-fredoka text-slate-800 mb-1">Цаг дууслаа!</h2>
-      <p class="text-slate-500 font-semibold mb-6 text-sm">Дасгал сургуулилтаа сайн хийлээ!</p>
-
-      <div class="grid grid-cols-2 gap-3 mb-6">
-        <div class="bg-amber-50 border-2 border-amber-200 p-3 rounded-2xl">
-          <div class="text-xs font-bold text-amber-700 uppercase">Нийт оноо</div>
-          <div id="modalScore" class="text-3xl font-black font-fredoka text-amber-900">0</div>
-        </div>
-        <div class="bg-emerald-50 border-2 border-emerald-200 p-3 rounded-2xl">
-          <div class="text-xs font-bold text-emerald-700 uppercase">Нарийвчлал</div>
-          <div id="modalAccuracy" class="text-3xl font-black font-fredoka text-emerald-900">100%</div>
-        </div>
-        <div class="bg-sky-50 border-2 border-sky-200 p-3 rounded-2xl">
-          <div class="text-xs font-bold text-sky-700 uppercase">Оносон шувуу</div>
-          <div id="modalHits" class="text-3xl font-black font-fredoka text-sky-900">0</div>
-        </div>
-        <div class="bg-purple-50 border-2 border-purple-200 p-3 rounded-2xl">
-          <div class="text-xs font-bold text-purple-700 uppercase">Дээд амжилт</div>
-          <div id="modalHighScore" class="text-3xl font-black font-fredoka text-purple-900">0</div>
-        </div>
-      </div>
-
-      <button id="modalPlayAgainBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-xl font-bold py-3.5 px-6 rounded-2xl border-b-4 border-emerald-700 shadow-lg transition active:translate-y-1 active:border-b-0">
-        Дахин тоглох 🔄
-      </button>
     </div>
   </div>
 
-  <script>
-    class AudioSynthesizer {
-      constructor() {
-        this.ctx = null;
-        this.isMuted = false;
-      }
-
-      init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
-        }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
-      }
-
-      playHit() {
-        if (this.isMuted) return;
-        this.init();
-        
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12); // C6
-
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-
-        osc.start(now);
-        osc.stop(now + 0.12);
-      }
-
-      playMiss() {
-        if (this.isMuted) return;
-        this.init();
-
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.linearRampToValueAtTime(110, now + 0.15);
-
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-
-        osc.start(now);
-        osc.stop(now + 0.15);
-      }
-
-      playGameOver() {
-        if (this.isMuted) return;
-        this.init();
-
-        const notes = [400, 350, 300, 250];
-        notes.forEach((freq, idx) => {
-          const now = this.ctx.currentTime + idx * 0.12;
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-
-          gain.gain.setValueAtTime(0.25, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-
-          osc.start(now);
-          osc.stop(now + 0.12);
-        });
-      }
-    }
-
-    const TARGET_KEYS = ['Й', 'Ы', 'Б', 'Ө', 'А', 'Х', 'Р', 'О', 'Л', 'Д'];
-    const BIRD_EMOJIS = ['🦅', '🦜', '🕊️', '🦆', '🦉', '🐦'];
-
-    // Map physical English QWERTY keypress to Mongolian Cyrillic Home Row
-    const EN_TO_MN_KEYMAP = {
-      'a': 'Й', 's': 'Ы', 'd': 'Б', 'f': 'Ө', 'g': 'А',
-      'h': 'Х', 'j': 'Р', 'k': 'О', 'l': 'Л', ';': 'Д',
-      'A': 'Й', 'S': 'Ы', 'D': 'Б', 'F': 'Ө', 'G': 'А',
-      'H': 'Х', 'J': 'Р', 'K': 'О', 'L': 'Л', ':': 'Д'
-    };
-
-    const synth = new AudioSynthesizer();
-
-    // Game state variables
-    let isRunning = false;
-    let score = 0;
-    let totalHits = 0;
-    let totalKeyPresses = 0;
-    let timeLeft = 60;
-    let spawnTimer = null;
-    let countTimer = null;
-    let activeBirds = [];
-    let animationFrameId = null;
-
-    // DOM Elements
-    const gameArea = document.getElementById('gameArea');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const timerDisplay = document.getElementById('timerDisplay');
-    const accuracyDisplay = document.getElementById('accuracyDisplay');
-    const startBtn = document.getElementById('startBtn');
-    const overlayStartBtn = document.getElementById('overlayStartBtn');
-    const timeSelect = document.getElementById('timeSelect');
-    const soundBtn = document.getElementById('soundBtn');
-    const startOverlay = document.getElementById('startOverlay');
-    
-    // Modal DOM Elements
-    const gameOverModal = document.getElementById('gameOverModal');
-    const modalContent = document.getElementById('modalContent');
-    const modalScore = document.getElementById('modalScore');
-    const modalAccuracy = document.getElementById('modalAccuracy');
-    const modalHits = document.getElementById('modalHits');
-    const modalHighScore = document.getElementById('modalHighScore');
-    const modalPlayAgainBtn = document.getElementById('modalPlayAgainBtn');
-
-    soundBtn.addEventListener('click', () => {
-      synth.isMuted = !synth.isMuted;
-      soundBtn.textContent = synth.isMuted ? '🔇' : '🔊';
-      soundBtn.classList.toggle('bg-rose-100', synth.isMuted);
-    });
-
-    startBtn.addEventListener('click', () => {
-      if (!isRunning) {
-        startGame();
-      } else {
-        stopGame();
-      }
-    });
-
-    overlayStartBtn.addEventListener('click', startGame);
-    modalPlayAgainBtn.addEventListener('click', startGame);
-
-    function startGame() {
-      synth.init();
-      isRunning = true;
-      score = 0;
-      totalHits = 0;
-      totalKeyPresses = 0;
-      timeLeft = parseInt(timeSelect.value);
-
-      scoreDisplay.textContent = '0';
-      timerDisplay.textContent = timeLeft + 'с';
-      accuracyDisplay.textContent = '100%';
-
-      startBtn.textContent = 'Зогсоох 🛑';
-      startBtn.className = 'bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-fredoka text-base sm:text-lg font-bold px-5 py-2 rounded-xl border-b-4 border-rose-700 shadow-md transition active:translate-y-0.5 active:border-b-0';
-      
-      timeSelect.disabled = true;
-      startOverlay.classList.add('hidden');
-      
-      // Hide modal if open
-      gameOverModal.classList.add('hidden');
-      gameOverModal.classList.remove('flex');
-
-      // Clear existing birds
-      activeBirds.forEach(b => b.element.remove());
-      activeBirds = [];
-
-      // Start spawner and countdown timer
-      clearInterval(spawnTimer);
-      clearInterval(countTimer);
-
-      spawnBird(); // Spawn immediately
-      spawnTimer = setInterval(spawnBird, 1100);
-
-      countTimer = setInterval(() => {
-        timeLeft--;
-        timerDisplay.textContent = timeLeft + 'с';
-
-        if (timeLeft <= 0) {
-          endGame();
-        }
-      }, 1000);
-
-      if (!animationFrameId) {
-        animationFrameId = requestAnimationFrame(gameLoop);
-      }
-    }
-
-    function stopGame() {
-      isRunning = false;
-      clearInterval(spawnTimer);
-      clearInterval(countTimer);
-
-      startBtn.textContent = 'Эхлүүлэх 🚀';
-      startBtn.className = 'bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-fredoka text-base sm:text-lg font-bold px-5 py-2 rounded-xl border-b-4 border-emerald-700 shadow-md transition active:translate-y-0.5 active:border-b-0';
-      timeSelect.disabled = false;
-    }
-
-    function endGame() {
-      stopGame();
-      synth.playGameOver();
-
-      const accuracy = totalKeyPresses > 0 ? Math.round((totalHits / totalKeyPresses) * 100) : 100;
-      
-      // Highscore local storage
-      const currentHighScore = parseInt(localStorage.getItem('cyrillic_typing_highscore') || '0');
-      if (score > currentHighScore) {
-        localStorage.setItem('cyrillic_typing_highscore', score.toString());
-      }
-      const newHighScore = Math.max(score, currentHighScore);
-
-      // Populate modal
-      modalScore.textContent = score;
-      modalAccuracy.textContent = accuracy + '%';
-      modalHits.textContent = totalHits;
-      modalHighScore.textContent = newHighScore;
-
-      // Show modal with animation
-      gameOverModal.classList.remove('hidden');
-      gameOverModal.classList.add('flex');
-      
-      setTimeout(() => {
-        modalContent.classList.remove('scale-95', 'opacity-0');
-        modalContent.classList.add('scale-100', 'opacity-100');
-      }, 20);
-    }
-
-    function spawnBird() {
-      if (!isRunning) return;
-
-      const randomKey = TARGET_KEYS[Math.floor(Math.random() * TARGET_KEYS.length)];
-      const randomEmoji = BIRD_EMOJIS[Math.floor(Math.random() * BIRD_EMOJIS.length)];
-      
-      const areaHeight = gameArea.clientHeight;
-      const areaWidth = gameArea.clientWidth;
-
-      if (areaHeight < 100 || areaWidth < 200) return;
-
-      const birdContainer = document.createElement('div');
-      birdContainer.className = 'bird-container flex flex-col items-center justify-center';
-      
-      const topPosY = Math.random() * (areaHeight - 120) + 10;
-      const flyFromLeft = Math.random() > 0.5;
-      
-      let startX = flyFromLeft ? -90 : areaWidth + 20;
-      const speed = (Math.random() * 1.8 + 1.2) * (flyFromLeft ? 1 : -1);
-
-      birdContainer.style.top = topPosY + 'px';
-      birdContainer.style.left = startX + 'px';
-
-      birdContainer.innerHTML = `
-        <div class="text-4xl sm:text-5xl filter drop-shadow-md select-none transform ${flyFromLeft ? 'scale-x-[-1]' : ''}">
-          ${randomEmoji}
-        </div>
-        <div class="bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-lg sm:text-xl px-3 py-0.5 rounded-full border-2 border-white shadow-lg -mt-2 uppercase font-fredoka">
-          ${randomKey}
-        </div>
-      `;
-
-      gameArea.appendChild(birdContainer);
-
-      activeBirds.push({
-        element: birdContainer,
-        key: randomKey,
-        x: startX,
-        y: topPosY,
-        speed: speed,
-        flyFromLeft: flyFromLeft
-      });
-    }
-
-    function gameLoop() {
-      if (isRunning) {
-        const areaWidth = gameArea.clientWidth;
-
-        for (let i = activeBirds.length - 1; i >= 0; i--) {
-          const bird = activeBirds[i];
-          bird.x += bird.speed;
-          bird.element.style.left = bird.x + 'px';
-
-          // Check if bird flew completely off screen
-          if ((bird.speed > 0 && bird.x > areaWidth + 100) || (bird.speed < 0 && bird.x < -120)) {
-            bird.element.remove();
-            activeBirds.splice(i, 1);
-          }
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(gameLoop);
-    }
-
-    window.addEventListener('keydown', (e) => {
-      // Prevent scrolling on Space if needed
-      if (e.key === ' ') e.preventDefault();
-
-      let inputKey = e.key;
-      
-      // Convert physical English layout keypress to Mongolian Cyrillic if needed
-      if (EN_TO_MN_KEYMAP[inputKey]) {
-        inputKey = EN_TO_MN_KEYMAP[inputKey];
-      } else {
-        inputKey = inputKey.toUpperCase();
-      }
-
-      // Highlight virtual keyboard key
-      const vkKeyElem = document.querySelector(`.vk-key[data-key="${inputKey}"]`);
-      if (vkKeyElem) {
-        vkKeyElem.classList.add('key-active');
-        setTimeout(() => vkKeyElem.classList.remove('key-active'), 150);
-      }
-
-      if (!isRunning) return;
-
-      // Only evaluate if key is within Home Row targets
-      if (TARGET_KEYS.includes(inputKey)) {
-        totalKeyPresses++;
-
-        // Find closest bird matching this key
-        let targetIndex = -1;
-        let minXDistance = Infinity;
-
-        activeBirds.forEach((bird, idx) => {
-          if (bird.key === inputKey) {
-            if (Math.abs(bird.x) < minXDistance) {
-              minXDistance = Math.abs(bird.x);
-              targetIndex = idx;
-            }
-          }
-        });
-
-        if (targetIndex !== -1) {
-          // HIT!
-          const hitBird = activeBirds[targetIndex];
-          synth.playHit();
-          totalHits++;
-          score += 10;
-
-          // Float-up score text
-          createScorePopup(hitBird.x, hitBird.y, '+10');
-
-          // Remove bird
-          hitBird.element.remove();
-          activeBirds.splice(targetIndex, 1);
-        } else {
-          // MISS (Key typed but no matching bird on screen)
-          synth.playMiss();
-          score = Math.max(0, score - 2);
-        }
-
-        // Update Stats UI
-        scoreDisplay.textContent = score;
-        const accuracy = Math.round((totalHits / totalKeyPresses) * 100);
-        accuracyDisplay.textContent = accuracy + '%';
-      }
-    });
-
-    function createScorePopup(x, y, text) {
-      const popup = document.createElement('div');
-      popup.className = 'hit-score-popup text-amber-400 font-black text-2xl sm:text-3xl z-40';
-      popup.textContent = text;
-      popup.style.left = (x + 20) + 'px';
-      popup.style.top = y + 'px';
-
-      gameArea.appendChild(popup);
-      setTimeout(() => popup.remove(), 700);
-    }
-  </script>
 </body>
 </html>
